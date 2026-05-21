@@ -17,7 +17,7 @@ for i = 1:numel(post.priors.rv)
     f.OriginalType = rv.Type;
     f.Mean = mean(x);
     f.Std = std(x);
-    f.COV = f.Std/abs(f.Mean);
+    f.COV = safe_cov(f.Mean, f.Std);
     f.Median = median(x);
     f.P2p5 = quantile(x,0.025);
     f.P97p5 = quantile(x,0.975);
@@ -52,4 +52,13 @@ end
 function [mu,sig] = logn_mom2par(m,cov)
 sig = sqrt(log(1+cov.^2));
 mu = log(m)-0.5*sig.^2;
+end
+
+
+function c = safe_cov(mu, sig)
+if abs(mu) < 1e-12
+    c = NaN;
+else
+    c = sig/abs(mu);
+end
 end

@@ -82,6 +82,18 @@ switch modelName
     otherwise
         error('Unknown modelName: use ''fib'' or ''malami''.');
 end
+
+% Optional equivalent additive discrepancy term for UQLab-style additive-error
+% Bayesian inversion. In the standard multiplicative formulation delta_xc is
+% present at its prior mean 0 and therefore has no effect. In the additive
+% discrepancy variant, theta_xc is kept fixed at 1 and delta_xc is updated.
+if isfield(X,'delta_xc')
+    delta_xc = col(X.delta_xc,N); % mm
+    xc = xc + delta_xc;
+    aux.delta_xc = delta_xc;
+else
+    aux.delta_xc = zeros(N,1);
+end
 end
 
 function [D_c, aux] = malami_model_forward_table2(X, ty, priors, N)

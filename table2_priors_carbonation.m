@@ -42,6 +42,10 @@ switch modelName
         P(end+1) = rv('bw',         'Gaussian', 0.446,     0.365, '-', 'Time-of-wetness exponent');
         P(end+1) = rv_uniform_cov('pSR', 0.146, 0.40, '-', 'Probability of driving rain');
         P(end+1) = rv('theta_xc',   'Gaussian', 1.0,       0.20, '-', 'Multiplicative carbonation-depth model uncertainty');
+        % Equivalent additive model discrepancy for UQLab-style additive-error option.
+        % This is normally NOT used together with theta_xc; use it instead of theta_xc
+        % in run_bayes_update_table2_fib_malami_additive.m.
+        P(end+1) = rv_gaussian_std('delta_xc', 0.0, 2.05, 'mm', 'Equivalent additive carbonation-depth model discrepancy');
 
     case 'malami'
         P(end+1) = rv('W_C',        'Gaussian', 0.55,      0.10, '-', 'Water-to-cement ratio');
@@ -54,6 +58,10 @@ switch modelName
         P(end+1) = rv_uniform_cov('pSR', 0.146, 0.40, '-', 'Probability of driving rain');
         P(end+1) = rv('T',          'Gaussian', 283.25,    0.002, 'K', 'Design temperature');
         P(end+1) = rv('theta_xc',   'Gaussian', 1.0,       0.20, '-', 'Multiplicative carbonation-depth model uncertainty');
+        % Equivalent additive model discrepancy for UQLab-style additive-error option.
+        % This is normally NOT used together with theta_xc; use it instead of theta_xc
+        % in run_bayes_update_table2_fib_malami_additive.m.
+        P(end+1) = rv_gaussian_std('delta_xc', 0.0, 2.04, 'mm', 'Equivalent additive carbonation-depth model discrepancy');
 
         % Deterministic Table 2 material-composition inputs for Malami.
         priors.det.C = 375;        % kg/m3
@@ -124,6 +132,22 @@ else
     s.COV = cov_or_b;
     s.Std = abs(mean_or_a)*cov_or_b;
 end
+end
+
+
+function s = rv_gaussian_std(name, meanVal, stdVal, unit, comment)
+% Gaussian variable specified directly by mean and standard deviation.
+% This is useful for zero-mean additive discrepancy variables, where CoV is undefined.
+s = struct('Name', name, ...
+           'Type', 'Gaussian', ...
+           'Unit', unit, ...
+           'Comment', comment, ...
+           'Mean', meanVal, ...
+           'COV', NaN, ...
+           'Std', stdVal, ...
+           'Lower', NaN, ...
+           'Upper', NaN, ...
+           'Update', true);
 end
 
 function s = rv_uniform_cov(name, meanVal, covVal, unit, comment)
