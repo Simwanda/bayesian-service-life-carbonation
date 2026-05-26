@@ -1,0 +1,8 @@
+% Suggested LaTeX footnotes for fitted CDFs, no beta distribution
+
+The bounded variables $t_c$ and $p_{SR}$ were represented using the best-fitting CDF selected from normal, lognormal, Weibull, bounded square-root and bounded power forms. The fitted CDF was selected by the smallest Kolmogorov--Smirnov distance to the empirical posterior CDF.
+
+fib, $tc$: bounded power CDF $F(x)=((x-a)/(b-a))^{\gamma}$ with $a=1$, $b=3$, and $\gamma=0.7209$.
+fib, $pSR$: bounded power CDF $F(x)=((x-a)/(b-a))^{\gamma}$ with $a=0.05$, $b=0.25$, and $\gamma=0.7597$.
+Malami, $tc$: bounded power CDF $F(x)=((x-a)/(b-a))^{\gamma}$ with $a=1$, $b=3$, and $\gamma=0.832$.
+Malami, $pSR$: bounded power CDF $F(x)=((x-a)/(b-a))^{\gamma}$ with $a=0.05$, $b=0.25$, and $\gamma=0.7395$.
