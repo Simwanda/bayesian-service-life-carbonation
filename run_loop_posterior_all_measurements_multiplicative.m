@@ -230,16 +230,33 @@ exportgraphics(fig, fullfile(outDir,'all_posterior_mean_curves_malami_multiplica
     'Resolution',300);
 
 % ------------------------------------------------------------
-% Combined posterior predictive mean +/- std across all individual updates
+% Figure 8: Combined posterior predictive mean +/- std
+% sigma_eps = 2.5 mm only
+% Former panels (c) and (d) are now shown as panels (a) and (b).
 % ------------------------------------------------------------
+
 mean_fib_all = mean(meanCurves_fib,1);
 std_fib_all  = std(meanCurves_fib,0,1);
 
 mean_mal_all = mean(meanCurves_mal,1);
 std_mal_all  = std(meanCurves_mal,0,1);
 
-% fib combined
-fig = figure('Color','w','Units','centimeters','Position',[2 2 14 9]);
+% Set default interpreters for clean labels
+set(groot,'defaultTextInterpreter','latex');
+set(groot,'defaultAxesTickLabelInterpreter','latex');
+set(groot,'defaultLegendInterpreter','latex');
+
+fig = figure('Color','w','Units','centimeters','Position',[2 2 18 7.5]);
+tl = tiledlayout(1,2,'Padding','compact','TileSpacing','compact');
+
+% Common limits
+xLimits = [0 100];
+yLimits = [0 35];
+
+% -----------------------------
+% (a) fib Bulletin 34
+% -----------------------------
+nexttile;
 hold on; box on; grid on;
 
 plot(t,mean_fib_all,'k-','LineWidth',2.0);
@@ -248,24 +265,25 @@ plot(t,max(mean_fib_all - std_fib_all,0),'k--','LineWidth',1.2, ...
     'HandleVisibility','off');
 
 errorbar(obs.t_years,mean(y_values),std(y_values),'ko', ...
-    'MarkerFaceColor','k','CapSize',6,'LineWidth',1.0);
+    'MarkerFaceColor','k','MarkerSize',4.5, ...
+    'CapSize',6,'LineWidth',1.0);
 
-xlabel('Time, t [years]');
-ylabel('Carbonation depth, x_c(t) [mm]');
-title('fib Bulletin 34: multiplicative combined mean +/- std');
-legend({'Mean of posterior means','Mean +/- std across updates','Measured mean +/- std'}, ...
-    'Location','northwest');
+xlabel('Time, $t$ [years]');
+ylabel('Carbonation depth, $x_c(t)$ [mm]');
+title('(a) fib Bulletin 34','FontWeight','normal');
 
-xlim([0 100]);
-ylim([0 35]);
+legend({'Mean of posterior means','Mean $\pm$ Std across updates', ...
+    'Measured mean $\pm$ std'}, ...
+    'Location','northwest','Box','on');
 
-exportgraphics(fig, fullfile(outDir,'combined_posterior_predictive_fib_multiplicative.pdf'), ...
-    'ContentType','vector');
-exportgraphics(fig, fullfile(outDir,'combined_posterior_predictive_fib_multiplicative.png'), ...
-    'Resolution',300);
+xlim(xLimits);
+ylim(yLimits);
+set(gca,'FontName','Times New Roman','FontSize',9,'LineWidth',0.8);
 
-% Malami combined
-fig = figure('Color','w','Units','centimeters','Position',[2 2 14 9]);
+% -----------------------------
+% (b) Malami
+% -----------------------------
+nexttile;
 hold on; box on; grid on;
 
 plot(t,mean_mal_all,'k-','LineWidth',2.0);
@@ -274,21 +292,36 @@ plot(t,max(mean_mal_all - std_mal_all,0),'k--','LineWidth',1.2, ...
     'HandleVisibility','off');
 
 errorbar(obs.t_years,mean(y_values),std(y_values),'ko', ...
-    'MarkerFaceColor','k','CapSize',6,'LineWidth',1.0);
+    'MarkerFaceColor','k','MarkerSize',4.5, ...
+    'CapSize',6,'LineWidth',1.0);
 
-xlabel('Time, t [years]');
-ylabel('Carbonation depth, x_c(t) [mm]');
-title('Malami: multiplicative combined mean +/- std');
-legend({'Mean of posterior means','Mean +/- std across updates','Measured mean +/- std'}, ...
-    'Location','northwest');
+xlabel('Time, $t$ [years]');
+ylabel('Carbonation depth, $x_c(t)$ [mm]');
+title('(b) Malami','FontWeight','normal');
 
-xlim([0 100]);
-ylim([0 35]);
+legend({'Mean of posterior means','Mean $\pm$ Std across updates', ...
+    'Measured mean $\pm$ std'}, ...
+    'Location','northwest','Box','on');
 
-exportgraphics(fig, fullfile(outDir,'combined_posterior_predictive_malami_multiplicative.pdf'), ...
+xlim(xLimits);
+ylim(yLimits);
+set(gca,'FontName','Times New Roman','FontSize',9,'LineWidth',0.8);
+
+% Export new Figure 8
+exportgraphics(fig, fullfile(outDir,'Figure8_posterior_carbonation_depth.pdf'), ...
     'ContentType','vector');
-exportgraphics(fig, fullfile(outDir,'combined_posterior_predictive_malami_multiplicative.png'), ...
+exportgraphics(fig, fullfile(outDir,'Figure8_posterior_carbonation_depth.png'), ...
     'Resolution',300);
+
+% Also keep the older individual combined exports, if needed
+exportgraphics(fig, fullfile(outDir,'combined_posterior_predictive_2panel_25mm.pdf'), ...
+    'ContentType','vector');
+exportgraphics(fig, fullfile(outDir,'combined_posterior_predictive_2panel_25mm.png'), ...
+    'Resolution',300);
+
+fprintf('\nSaved updated two-panel Figure 8:\n');
+fprintf('  %s\n', fullfile(outDir,'Figure8_posterior_carbonation_depth.pdf'));
+fprintf('  %s\n', fullfile(outDir,'Figure8_posterior_carbonation_depth.png'));
 
 % ------------------------------------------------------------
 % Combined posterior sample analysis

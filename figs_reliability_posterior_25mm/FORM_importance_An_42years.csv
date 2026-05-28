@@ -1,0 +1,15 @@
+Case,Parameter,Alpha2
+fib_caseI,A,0.624763955665645
+fib_caseI,n,0.123065042036712
+fib_caseI,theta_xc,0.252171002297643
+fib_caseII,A,0.323583022739247
+fib_caseII,n,0.0814945104484202
+fib_caseII,theta_xc,0.144916789205197
+fib_caseII,Cr,0.450005677607136
+malami_caseI,A,0.823146113520062
+malami_caseI,n,0.0317390384986065
+malami_caseI,theta_xc,0.145114847981332
+malami_caseII,A,0.383329235264215
+malami_caseII,n,0.0284754697059508
+malami_caseII,theta_xc,0.098075006545412
+malami_caseII,Cr,0.490120288484422
